@@ -1,4 +1,4 @@
-use std::ops::{Add, Sub};
+use std::ops::{Add, Mul, Sub};
 
 // Vector Algebra
 trait Vec3Expr {
@@ -10,6 +10,7 @@ trait Vec3Expr {
 struct LazyVec3<T>(T);
 struct Vec3Add<L,R>(L,R);
 struct Vec3Subtract<L,R>(L,R);
+struct Vec3Mul<L,R>(L,R);
 type Vec3 = LazyVec3<(f64,f64,f64)>;
 
 impl Vec3 {
@@ -70,6 +71,29 @@ impl<L: Vec3Expr, R: Vec3Expr> Sub<R> for LazyVec3<L> {
     }
 }
 
+// TODO: Scalar Multiplication
+
+// Vector Product
+impl<L: Vec3Expr, R: Vec3Expr> Vec3Expr for Vec3Mul<L,R> {
+    fn x(&self) -> f64 { self.0.y() * self.1.z() - self.0.z() * self.1.y() }
+    fn y(&self) -> f64 { self.0.z() * self.1.x() - self.0.x() * self.1.z() }
+    fn z(&self) -> f64 { self.0.x() * self.1.y() - self.0.y() * self.1.x() }
+}
+
+impl<R: Vec3Expr> Mul<R> for Vec3 {
+    type Output = LazyVec3<Vec3Mul<Self,R>>;
+    fn mul(self, rhs: R) -> Self::Output {
+        LazyVec3(Vec3Mul(self, rhs))
+    }
+}
+
+impl<L: Vec3Expr, R: Vec3Expr> Mul<R> for LazyVec3<L> {
+    type Output = LazyVec3<Vec3Mul<L,R>>;
+    fn mul(self, rhs: R) -> Self::Output {
+        LazyVec3(Vec3Mul(self.0, rhs))
+    }
+}
+
 // TODO: String library
 
 fn main() {
@@ -77,5 +101,8 @@ fn main() {
     let vb = Vec3::new(0.0, 1.0, 0.0);
     let vc = Vec3::new(1.0, 0.0, 0.0);
     //let vx = va + vb + vc;
-    let vy = va - vb - vc;
+    //let vy = va - vb - vc;
+    //let vz = va * vb;
+    let z = Vec3::from(vy);
+    println!("z = ({}, {}, {})", z.x(), z.y(), z.z());
 }
