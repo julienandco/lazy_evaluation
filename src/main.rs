@@ -10,6 +10,8 @@ trait Vec3Expr {
 struct LazyVec3<T>(T);
 struct Vec3Add<L,R>(L,R);
 struct Vec3Subtract<L,R>(L,R);
+// TODO: Scalar Multiplication (lhs and rhs)
+// struct Vec3Scale<f64,R>(f64,R);
 struct Vec3Mul<L,R>(L,R);
 type Vec3 = LazyVec3<(f64,f64,f64)>;
 
@@ -73,6 +75,28 @@ impl<L: Vec3Expr, R: Vec3Expr> Sub<R> for LazyVec3<L> {
 
 // TODO: Scalar Multiplication
 
+// The following was intended to solve lhs scalar multiplication: alpha * v, but it did not work 🥲
+/*
+impl<L: f64, R: Vec3Expr> Vec3Expr for Vec3Scale<L,R> {
+    fn x(&self) -> f64 { (self.0).0 * self.1.x() }
+    fn y(&self) -> f64 { (self.0).0 - self.1.y() }
+    fn z(&self) -> f64 { (self.0).0 - self.1.z() }
+}
+
+impl<L: f64> Mul<L> for Vec3 {
+    type Output = LazyVec3<Vec3Scale<L, Self>>;
+    fn mul(self, lhs: L) -> Self::Output {
+        LazyVec3(Vec3Scale(lhs, self))
+    }
+}
+
+impl<L: f64, R: Vec3Expr> Mul<L> for LazyVec3<R> {
+    type Output = LazyVec3<Vec3Scale<L,R>>;
+    fn mul(self, lhs: L) -> Self::Output {
+        LazyVec3(Vec3Scale(lhs, self.1))
+    }
+}*/
+
 // Vector Product
 impl<L: Vec3Expr, R: Vec3Expr> Vec3Expr for Vec3Mul<L,R> {
     fn x(&self) -> f64 { self.0.y() * self.1.z() - self.0.z() * self.1.y() }
@@ -103,6 +127,7 @@ fn main() {
     //let vx = va + vb + vc;
     //let vy = va - vb - vc;
     //let vz = va * vb;
+    let vzz = va * vb;
     let z = Vec3::from(vy);
     println!("z = ({}, {}, {})", z.x(), z.y(), z.z());
 }
