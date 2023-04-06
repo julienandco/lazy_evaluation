@@ -1,5 +1,7 @@
 use std::ops::{Add, Mul, Sub};
 
+// TODO: figure out how to use #[inline] and use it !
+
 // Vector Algebra
 pub trait Vec3Expr {
     fn x(&self) -> f64;
