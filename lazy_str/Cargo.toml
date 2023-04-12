@@ -1,0 +1,16 @@
+[package]
+name = "lazy_str"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[dev-dependencies]
+criterion = "0.3"
+
+[[bench]]
+name = "benchmark"
+harness = false
+
+# [release]
+# lto=true
