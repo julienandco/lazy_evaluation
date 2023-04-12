@@ -1,8 +1,0 @@
-[package]
-name = "usage"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-lazy_str = { path = "../lazy_str" }
-lazy_vec = { path = "../lazy_vec" }
