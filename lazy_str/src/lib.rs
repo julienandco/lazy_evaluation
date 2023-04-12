@@ -48,9 +48,3 @@ impl<S: Display, T: Display> Add<S> for LazyStr<T> {
         })
     }
 }
-
-// #[test]
-// fn string_test() {
-//     let a = LazyStr::new("foo", "bar");
-//     assert_eq!("foobar", a.to_string());
-// }
