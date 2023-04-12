@@ -2,6 +2,5 @@
 
 members = [
     "lazy_str",
-    "lazy_vec",
-    "usage"
+    "lazy_vec"
 ]
